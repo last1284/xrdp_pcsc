@@ -24,6 +24,8 @@
 #ifndef _SMARTCARD_PCSC_H
 #define _SMARTCARD_PCSC_H
 
+#define MAX_ATR_SIZE 33
+
 int scard_pcsc_get_wait_objs(tbus *objs, int *count, int *timeout);
 int scard_pcsc_check_wait_objs(void);
 int scard_pcsc_init(void);
