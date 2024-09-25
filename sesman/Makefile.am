@@ -64,6 +64,7 @@ SUBDIRS = \
   libsesman \
   sesexec \
   tools \
-  chansrv
+  chansrv \
+  chansrv/pcsc
 
 CLEANFILES = $(nodist_sesmansysconf_DATA)
