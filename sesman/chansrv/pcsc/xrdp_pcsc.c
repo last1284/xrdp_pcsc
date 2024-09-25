@@ -16,6 +16,7 @@
 #include <poll.h>
 
 #include "string_calls.h"
+#include "xrdp_pcsc.h"
 
 #define PCSC_API
 
@@ -114,6 +115,81 @@ static pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* for pcsc_stringify_error */
 static char g_error_str[512];
+
+/*****************************************************************************/
+PCSC_API LONG
+SCardEstablishContext(DWORD dwScope, LPCVOID pvReserved1, LPCVOID pvReserved2,
+                      LPSCARDCONTEXT phContext);
+
+PCSC_API LONG
+SCardReleaseContext(SCARDCONTEXT hContext);
+
+PCSC_API LONG
+SCardIsValidContext(SCARDCONTEXT hContext);
+
+PCSC_API LONG 
+SCardConnect(SCARDCONTEXT hContext, LPCSTR szReader, DWORD dwShareMode,
+             DWORD dwPreferredProtocols, LPSCARDHANDLE phCard,
+             LPDWORD pdwActiveProtocol);
+
+PCSC_API LONG
+SCardReconnect(SCARDHANDLE hCard, DWORD dwShareMode,
+               DWORD dwPreferredProtocols, DWORD dwInitialization,
+               LPDWORD pdwActiveProtocol);
+
+PCSC_API LONG
+SCardDisconnect(SCARDHANDLE hCard, DWORD dwDisposition);
+
+PCSC_API LONG
+SCardBeginTransaction(SCARDHANDLE hCard);
+
+PCSC_API LONG
+SCardEndTransaction(SCARDHANDLE hCard, DWORD dwDisposition);
+
+PCSC_API LONG
+SCardStatus(SCARDHANDLE hCard, LPSTR mszReaderName, LPDWORD pcchReaderLen,
+            LPDWORD pdwState, LPDWORD pdwProtocol, LPBYTE pbAtr,
+            LPDWORD pcbAtrLen);
+
+PCSC_API LONG
+SCardGetStatusChange(SCARDCONTEXT hContext, DWORD dwTimeout,
+                     LPSCARD_READERSTATE rgReaderStates, DWORD cReaders);
+
+PCSC_API LONG
+SCardControl(SCARDHANDLE hCard, DWORD dwControlCode, LPCVOID pbSendBuffer,
+             DWORD cbSendLength, LPVOID pbRecvBuffer, DWORD cbRecvLength,
+             LPDWORD lpBytesReturned);
+
+PCSC_API LONG
+SCardTransmit(SCARDHANDLE hCard, const SCARD_IO_REQUEST *pioSendPci,
+              LPCBYTE pbSendBuffer, DWORD cbSendLength,
+              SCARD_IO_REQUEST *pioRecvPci, LPBYTE pbRecvBuffer,
+              LPDWORD pcbRecvLength);
+
+PCSC_API LONG
+SCardListReaderGroups(SCARDCONTEXT hContext, LPSTR mszGroups,
+                      LPDWORD pcchGroups);
+
+PCSC_API LONG
+SCardListReaders(SCARDCONTEXT hContext, LPCSTR mszGroups, LPSTR mszReaders,
+                 LPDWORD pcchReaders);
+
+PCSC_API LONG
+SCardFreeMemory(SCARDCONTEXT hContext, LPCVOID pvMem);
+
+PCSC_API LONG
+SCardCancel(SCARDCONTEXT hContext);
+
+PCSC_API LONG
+SCardGetAttrib(SCARDHANDLE hCard, DWORD dwAttrId, LPBYTE pbAttr,
+               LPDWORD pcbAttrLen);
+
+PCSC_API LONG
+SCardSetAttrib(SCARDHANDLE hCard, DWORD dwAttrId, LPCBYTE pbAttr,
+               DWORD cbAttrLen);
+
+PCSC_API char *
+pcsc_stringify_error(const long code);
 
 /*****************************************************************************/
 /* produce a hex dump */
